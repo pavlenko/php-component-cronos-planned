@@ -47,6 +47,7 @@ final class StorageDBAL implements StorageInterface
         $table = $schemaNew->createTable($this->tableName);
         $table->addColumn('id', Type::INTEGER, ['unsigned' => true, 'autoincrement' => true]);
         $table->addColumn('name', Type::STRING, ['length' => 255]);
+        $table->addColumn('arguments', Type::TEXT, ['notnull' => false, 'length' => 65535]);
         $table->addColumn('status', Type::INTEGER, ['unsigned' => true]);
         $table->addColumn('error', Type::TEXT, ['notnull' => false, 'length' => 65535]);
         $table->addColumn('estimate', Type::INTEGER, ['unsigned' => true, 'notnull' => false]);
@@ -130,11 +131,12 @@ final class StorageDBAL implements StorageInterface
     public function convertTaskToArray(TaskInterface $task): array
     {
         $data = [
-            'name'     => $task->getName(),
-            'status'   => $task->getStatus(),
-            'error'    => $task->getError() ? (string) $task->getError() : null,
-            'estimate' => $task->getEstimate(),
-            'progress' => $task->getProgress(),
+            'name'      => $task->getName(),
+            'arguments' => json_encode($task->getArguments()),
+            'status'    => $task->getStatus(),
+            'error'     => $task->getError() ? (string) $task->getError() : null,
+            'estimate'  => $task->getEstimate(),
+            'progress'  => $task->getProgress(),
         ];
 
         if ($task->getScheduledAt()) {
@@ -177,6 +179,7 @@ final class StorageDBAL implements StorageInterface
 
         $task->setID($data['id']);
         $task->setName($data['name']);
+        $task->setArguments((array) json_decode($data['arguments'] ?: '[]'));
         $task->setStatus($data['status']);
         $task->setEstimate($data['estimate']);
         $task->setProgress($data['progress']);
