@@ -38,6 +38,7 @@ class StorageDBALTest extends TestCase
             [
                 'id'          => 'ID',
                 'name'        => 'TASK',
+                'arguments'   => '[]',
                 'status'      => TaskInterface::STATUS_PENDING,
                 'error'       => null,
                 'estimate'    => null,
@@ -147,6 +148,7 @@ class StorageDBALTest extends TestCase
 
         $data = [
             'name'        => 'TASK',
+            'arguments'   => '[]',
             'status'      => TaskInterface::STATUS_ERROR,
             'error'       => (string) $error,
             'estimate'    => 100,
@@ -169,6 +171,7 @@ class StorageDBALTest extends TestCase
         $data = [
             'id'          => 100,
             'name'        => 'TASK',
+            'arguments'   => '[]',
             'status'      => TaskInterface::STATUS_ERROR,
             'error'       => null,
             'estimate'    => 100,
